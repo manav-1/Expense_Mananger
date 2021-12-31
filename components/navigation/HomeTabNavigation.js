@@ -19,7 +19,7 @@ const HomeTabNavigation = () => {
                 tabBarActiveTintColor: '#000',
                 tabBarInactiveBackgroundColor: '#fff',
                 tabBarInactiveTintColor: '#0008',
-                tabBarLabelStyle: {fontFamily: 'Karla-Regular', fontSize: 10},
+                tabBarLabelStyle: {fontFamily: 'monospace', fontSize: 10},
                 tabBarStyle: {
                     borderRadius: 50,
                     position: 'absolute',
