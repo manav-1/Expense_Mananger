@@ -60,7 +60,7 @@ const Notes = () => {
     }, []);
 
     const handleNewNote = () => {
-        const values = {date: date.toLocaleDateString(), note};
+        const values = {date: date, note};
         const validationSchema = Yup.object({
             date: Yup.date().required('Date is required'),
             note: Yup.string().required('Note is required'),
@@ -68,7 +68,7 @@ const Notes = () => {
         validationSchema
             .validate(values)
             .then(() => {
-                addNote(values);
+                addNote({...values, date: values.date.toDateString()});
                 setSnackbarVisible(true);
                 setSnackbarText('Added Successfully');
                 setNote('');

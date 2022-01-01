@@ -56,7 +56,7 @@ const Analytics = ({expenses}) => {
         <View style={{marginVertical: 10}}>
             <ScrollView contentContainerStyle={{alignItems: 'center'}}>
                 <View>
-                    <Title style={{fontSize: 20}}>Number of Transactions</Title>
+                    <Title style={{fontSize: 20}}>Transactions</Title>
                     <PieChart
                         data={groupedByType}
                         width={screenWidth}

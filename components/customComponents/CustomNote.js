@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
+import ExpandableText from './ExpandableText';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CustomNote = ({note, deleteNote}) => {
@@ -9,7 +10,7 @@ const CustomNote = ({note, deleteNote}) => {
     return (
         <View style={styles.note}>
             <View>
-                <ExpandableText note={capitalize(noteText)} />
+                <ExpandableText text={capitalize(noteText)} />
                 <Text style={styles.dateText}>
                     {new Date(date).toDateString()}
                 </Text>
@@ -25,18 +26,6 @@ const CustomNote = ({note, deleteNote}) => {
     );
 };
 
-const ExpandableText = ({note}) => {
-    const [nLines, setNLines] = React.useState(false);
-    return (
-        <Text
-            style={styles.noteText}
-            numberOfLines={nLines ? 0 : 1}
-            onPress={() => setNLines(!nLines)}>
-            {note.toString()}
-        </Text>
-    );
-};
-
 export default CustomNote;
 
 const styles = StyleSheet.create({
@@ -47,14 +36,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginVertical: 5,
         // padding: 10
-    },
-    noteText: {
-        fontFamily: 'NotoSansMono-Regular',
-        fontSize: 18,
-        color: '#fff',
-        marginVertical: 15,
-        marginHorizontal: 5,
-        padding: 7,
     },
     dateText: {
         fontFamily: 'NotoSansMono-Regular',

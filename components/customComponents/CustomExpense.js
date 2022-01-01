@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Chip} from 'react-native-paper';
 import PropTypes from 'prop-types';
+import ExpandableText from './ExpandableText';
 
 const CustomExpense = ({expense, deleteItem, editItem}) => {
     const getWayIcon = way => {
@@ -64,9 +65,13 @@ const CustomExpense = ({expense, deleteItem, editItem}) => {
             ]}>
             <View style={{alignItems: 'center'}}>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Text numberOfLines={1} style={styles.expenseName}>
+                    {/* <Text numberOfLines={1} style={styles.expenseName}>
                         {expense.description}
-                    </Text>
+                    </Text> */}
+                    <ExpandableText
+                        text={expense.description}
+                        customStyle={styles.expenseName}
+                    />
                     <Text style={styles.money}>₹ {expense.value} </Text>
                 </View>
 
@@ -115,6 +120,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontFamily: 'Karla-Regular',
         color: '#fff',
+        marginVertical: 0,
     },
     money: {
         fontSize: 15,

@@ -17,7 +17,7 @@ const LineScreen = props => {
             '',
             ...dateList.map(item =>
                 new Date(item)
-                    .toLocaleString('default', {month: 'long'})
+                    .toDateString('default', {month: 'long'})
                     .split(' ')
                     .slice(1, 3)
                     .reverse()
@@ -48,6 +48,10 @@ const LineScreen = props => {
             strokeWidth: 1.5, // optional
             strokeDasharray: '', // solid background lines with no dashes
         },
+        propsForLabels: {
+            fontSize: 10,
+            fontFamily: 'Karla-Medium',
+        },
     };
     return (
         <LinearGradient
@@ -67,13 +71,14 @@ const LineScreen = props => {
                         top: 20,
                         left: -30,
                     }}
+                    verticalLabelRotation={30}
                     data={data}
                     width={screenWidth}
-                    height={200}
+                    height={190}
                     fromZero={true}
                     withInnerLines={false}
                     bezier={dateList.length <= 1}
-                    xLabelsOffset={-4}
+                    xLabelsOffset={-10}
                     withHorizontalLabels={false}
                     hidePointsAtIndex={[0, data.labels.length - 1]}
                     renderDotContent={({x, y, indexData, index}) => {
@@ -109,13 +114,15 @@ const styles = StyleSheet.create({
         top: '45%',
         left: '-7%',
         fontSize: 12,
-        fontFamily: 'poppinsBold',
+        fontFamily: 'Poppins-SemiBold',
+        color: '#000',
     },
     dateText: {
         position: 'absolute',
         top: '92%',
         left: '48%',
-        fontFamily: 'poppinsBold',
+        fontFamily: 'Poppins-SemiBold',
         fontSize: 12,
+        color: '#000',
     },
 });
