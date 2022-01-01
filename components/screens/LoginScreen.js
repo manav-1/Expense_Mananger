@@ -121,11 +121,13 @@ function LoginScreen({navigation}) {
         } catch (error) {
             setSnackbarVisible(true);
             console.log(error);
-            setSnackbarText(error.message);
+            setSnackbarText("Google Login isn't supported yet");
         }
     };
 
     const handleFacebookLogin = async () => {
+        setSnackbarVisible(true);
+        setSnackbarText("Facebook login isn't supported yet");
         console.log('Facebook Login');
         // const result = await LoginManager.logInWithPermissions([
         //     'public_profile',

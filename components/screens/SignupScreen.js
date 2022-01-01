@@ -99,11 +99,21 @@ const SignupScreen = ({navigation}) => {
         // firebase.auth().createUserWithEmailAndPassword();
     };
     const handleGoogleLogin = async () => {
-        const {idToken} = await GoogleSignin.signIn();
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        await auth().signInWithCredential(googleCredential);
-        await AsyncStorage.setItem('expense_user', auth().currentUser.uid);
-        navigation.push('HomeNav');
+        try {
+            const {idToken} = await GoogleSignin.signIn();
+            const googleCredential =
+                auth.GoogleAuthProvider.credential(idToken);
+            await auth().signInWithCredential(googleCredential);
+            await AsyncStorage.setItem('expense_user', auth().currentUser.uid);
+            navigation.push('HomeNav');
+        } catch (err) {
+            setSnackbarVisible(true);
+            setSnackbarText("Google Login isn't supported yet");
+        }
+    };
+    const handleFacebookLogin = async () => {
+        setSnackbarVisible(true);
+        setSnackbarText("Facebook login isn't supported yet");
     };
     return (
         <ImageBackground
@@ -155,7 +165,7 @@ const SignupScreen = ({navigation}) => {
                             />
                             <IconText>Google</IconText>
                         </Login>
-                        <Login>
+                        <Login onPress={handleFacebookLogin}>
                             <Ionicons
                                 name="logo-facebook"
                                 size={40}
