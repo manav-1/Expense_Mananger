@@ -298,6 +298,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-SemiBold',
         fontSize: 12,
         marginBottom: -5,
+        color: '#000',
     },
     verticalMargin: {marginVertical: 10},
 });

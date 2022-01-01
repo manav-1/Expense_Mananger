@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import {Dimensions} from 'react-native';
 
 const MainContainer = styled.View`
-    background: #fff6;
+    background: #fff9;
     width: ${Dimensions.get('window').width * 0.9}px;
     border-radius: 10px;
     padding: 20px 10px;
@@ -14,7 +14,7 @@ const Title = styled.Text`
     text-align: center;
     font-weight: 600;
     font-family: Karla-Regular;
-    color: #fff;
+    color: #000;
     margin-bottom: 20px;
     font-size: 25px;
 `;
@@ -51,6 +51,7 @@ const ButtonText = styled.Text`
     font-weight: 600;
     font-family: Inter-Regular;
     font-size: 18px;
+    color: #000;
 `;
 
 const LoginContainer = styled.View`
@@ -74,6 +75,7 @@ const SignText = styled.Text`
     align-items: center;
     justify-content: center;
     font-family: monospace;
+    color: #000;
 `;
 const RowContainer = styled.View`
     flex-direction: row;
@@ -81,7 +83,7 @@ const RowContainer = styled.View`
 `;
 
 const IconText = styled.Text`
-    color: #fff;
+    color: #000;
     font-family: Inter-Medium;
     font-size: 11px;
     width: 80px;
@@ -149,6 +151,7 @@ const ExpenseInput = styled.TextInput`
 const CenteredKarlaText = styled.Text`
     font-family: Karla-Regular;
     text-align: center;
+    color: #000;
 `;
 
 export {

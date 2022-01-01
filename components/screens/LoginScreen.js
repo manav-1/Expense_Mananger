@@ -35,7 +35,7 @@ import {
 } from '../customComponents/styledComponents';
 
 const source = {
-    uri: 'https://images.unsplash.com/photo-1621264448270-9ef00e88a935?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=657&q=80',
+    uri: 'https://images.unsplash.com/photo-1596679593281-41c14166a24a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=100',
 };
 try {
     GoogleSignin.configure({
@@ -162,7 +162,7 @@ function LoginScreen({navigation}) {
                 style={[
                     StyleSheet.absoluteFill,
                     {
-                        backgroundColor: '#000D',
+                        backgroundColor: '#000B',
                         alignItems: 'center',
                         justifyContent: 'center',
                     },
@@ -175,13 +175,13 @@ function LoginScreen({navigation}) {
                     <Title>Login Here</Title>
                     <Input
                         placeholder="Enter your username/ email"
-                        placeholderTextColor="#fffA"
+                        placeholderTextColor="#000A"
                         value={email}
                         onChangeText={val => setEmail(val)}
                     />
                     <Input
                         placeholder="Enter your password"
-                        placeholderTextColor="#fffA"
+                        placeholderTextColor="#000A"
                         value={password}
                         onChangeText={val => setPassword(val)}
                     />

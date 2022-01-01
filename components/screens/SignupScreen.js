@@ -33,7 +33,7 @@ import {
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const source = {
-    uri: 'https://images.unsplash.com/photo-1621264448270-9ef00e88a935?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=657&q=80',
+    uri: 'https://images.unsplash.com/photo-1623911381192-5936d58af80a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=100',
 };
 
 try {
@@ -124,7 +124,7 @@ const SignupScreen = ({navigation}) => {
                 style={[
                     StyleSheet.absoluteFill,
                     {
-                        backgroundColor: '#000D',
+                        backgroundColor: '#000B',
                         alignItems: 'center',
                         justifyContent: 'center',
                     },
@@ -137,19 +137,19 @@ const SignupScreen = ({navigation}) => {
                     <Title>SignUp Here</Title>
                     <Input
                         placeholder="Enter your name"
-                        placeholderTextColor="#fffA"
+                        placeholderTextColor="#000A"
                         value={name}
                         onChangeText={val => setName(val)}
                     />
                     <Input
                         placeholder="Enter your username/ email"
-                        placeholderTextColor="#fffA"
+                        placeholderTextColor="#000A"
                         value={email}
                         onChangeText={val => setEmail(val)}
                     />
                     <Input
                         placeholder="Enter your password"
-                        placeholderTextColor="#fffA"
+                        placeholderTextColor="#000A"
                         value={password}
                         onChangeText={val => setPassword(val)}
                     />

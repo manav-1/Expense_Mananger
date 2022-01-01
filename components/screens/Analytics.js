@@ -19,6 +19,7 @@ import database from '@react-native-firebase/database';
 import CustomExpense from '../customComponents/CustomExpense';
 import Analytics from '../customComponents/Analytics';
 import LineScreen from './LineScreen';
+import {ContributionGraph} from 'react-native-chart-kit';
 
 const MONTHS = [
     'January',
@@ -155,34 +156,127 @@ const AnalyticsScreen = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    {expensesForAnalytics.length === 0 ? (
-                        <Text
+                    {expensesForAnalytics.length > 0 ? (
+                        <CenteredKarlaText
                             style={{
                                 color: '#fff',
-                                fontSize: 20,
-                                fontFamily: 'Karla-Regular',
+                                fontFamily: 'Karla-Medium',
+                                fontSize: 22,
                             }}>
-                            No Expenses to Show
-                        </Text>
+                            Expenses for {selectedMonth} {selectedYear}
+                        </CenteredKarlaText>
                     ) : null}
                 </View>
-                {expensesForAnalytics.length > 0 ? (
-                    <CenteredKarlaText
+                {expensesForAnalytics.length === 0 ? (
+                    <Text
                         style={{
                             color: '#fff',
-                            fontFamily: 'Karla-Medium',
-                            fontSize: 22,
+                            fontSize: 20,
+                            fontFamily: 'Karla-Regular',
                         }}>
-                        Expenses for {selectedMonth} {selectedYear}
-                    </CenteredKarlaText>
+                        No Expenses to Show
+                    </Text>
                 ) : null}
+
                 <View style={{padding: 10}} />
                 {expensesForAnalytics.length > 0 ? (
                     <>
                         <LineScreen data={groupByDates(expensesForAnalytics)} />
-                        <Analytics expenses={expensesForAnalytics} />
+                        <View
+                            style={{
+                                padding: 15,
+                                borderRadius: 10,
+                                backgroundColor: '#FFC290',
+                                alignItems: 'center',
+                                marginTop: 10,
+                            }}>
+                            <CenteredKarlaText
+                                style={{
+                                    color: '#000',
+                                    marginBottom: 10,
+                                    fontSize: 18,
+                                    fontFamily: 'Karla-Bold',
+                                }}>
+                                Total Number of Transactions:&nbsp;
+                                {expensesForAnalytics.length}
+                            </CenteredKarlaText>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                    justifyContent: 'space-around',
+                                    fontFamily: 'Karla-Bold',
+                                }}>
+                                <View>
+                                    <CenteredKarlaText style={{color: '#000'}}>
+                                        Debit Transactions:&nbsp;
+                                        {
+                                            expensesForAnalytics.filter(
+                                                expense =>
+                                                    expense.type === 'Debit',
+                                            ).length
+                                        }
+                                    </CenteredKarlaText>
+                                    <CenteredKarlaText style={{color: '#000'}}>
+                                        Value:&nbsp;
+                                        {expensesForAnalytics
+                                            .filter(
+                                                expense =>
+                                                    expense.type === 'Debit',
+                                            )
+                                            .reduce(
+                                                (prev, cur) =>
+                                                    Number(prev) +
+                                                    Number(cur.value),
+                                                0,
+                                            )
+                                            .toFixed(2)
+                                            .replace(
+                                                /\d(?=(\d{3})+\.)/g,
+                                                '$&,',
+                                            )}
+                                    </CenteredKarlaText>
+                                </View>
+                                <View>
+                                    <CenteredKarlaText style={{color: '#000'}}>
+                                        Credit Transactions:&nbsp;
+                                        {
+                                            expensesForAnalytics.filter(
+                                                expense =>
+                                                    expense.type === 'Credit',
+                                            ).length
+                                        }
+                                    </CenteredKarlaText>
+                                    <CenteredKarlaText style={{color: '#000'}}>
+                                        Value:&nbsp;
+                                        {expensesForAnalytics
+                                            .filter(
+                                                expense =>
+                                                    expense.type === 'Credit',
+                                            )
+                                            .reduce(
+                                                (prev, cur) =>
+                                                    Number(prev) +
+                                                    Number(cur.value),
+                                                0,
+                                            )
+                                            .toFixed(2)
+                                            .replace(
+                                                /\d(?=(\d{3})+\.)/g,
+                                                '$&,',
+                                            )}
+                                    </CenteredKarlaText>
+                                </View>
+                            </View>
+                        </View>
+                        <Analytics
+                            contributionData
+                            expenses={expensesForAnalytics}
+                        />
                     </>
                 ) : null}
+                <View style={{padding: 10}} />
+
                 <View style={{padding: 10}} />
                 <ScrollView horizontal>
                     {expensesForAnalytics.map((expense, index) => (
@@ -193,6 +287,19 @@ const AnalyticsScreen = () => {
         </GradientContainer>
     );
 };
+const commitsData = [
+    {date: '2017-01-02', count: 1},
+    {date: '2017-01-03', count: 2},
+    {date: '2017-01-04', count: 3},
+    {date: '2017-01-05', count: 4},
+    {date: '2017-01-06', count: 5},
+    {date: '2017-01-30', count: 2},
+    {date: '2017-01-31', count: 3},
+    {date: '2017-03-01', count: 2},
+    {date: '2017-04-02', count: 4},
+    {date: '2017-03-05', count: 2},
+    {date: '2017-02-30', count: 4},
+];
 
 const styles = StyleSheet.create({
     tabBarTitle: {

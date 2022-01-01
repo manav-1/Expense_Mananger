@@ -15,6 +15,7 @@ import {
     GradientContainer,
     PaddedContainer,
     ExpenseInput,
+    CenteredKarlaText,
 } from '../customComponents/styledComponents';
 import PropTypes from 'prop-types';
 import {Snackbar, ActivityIndicator, ProgressBar} from 'react-native-paper';
@@ -187,7 +188,11 @@ const Expenses = ({navigation}) => {
                                 setExpensesToShow(expenses);
                             }}
                             icon={() => (
-                                <Ionicons name="wallet-outline" size={15} />
+                                <Ionicons
+                                    name="wallet-outline"
+                                    color="#000"
+                                    size={15}
+                                />
                             )}>
                             All
                         </Chip>
@@ -202,6 +207,7 @@ const Expenses = ({navigation}) => {
                             icon={() => (
                                 <Ionicons
                                     name="trending-down-outline"
+                                    color="#000"
                                     size={15}
                                 />
                             )}>
@@ -218,6 +224,7 @@ const Expenses = ({navigation}) => {
                             icon={() => (
                                 <Ionicons
                                     name="trending-up-outline"
+                                    color="#000"
                                     size={15}
                                 />
                             )}>
@@ -237,7 +244,11 @@ const Expenses = ({navigation}) => {
                                 setExpensesToShow(initialValue);
                             }}
                             icon={() => (
-                                <Ionicons name="enter-outline" size={15} />
+                                <Ionicons
+                                    name="enter-outline"
+                                    color="#000"
+                                    size={15}
+                                />
                             )}>
                             Expense Way
                         </Chip>
@@ -255,7 +266,11 @@ const Expenses = ({navigation}) => {
                                 setExpensesToShow(initialValue);
                             }}
                             icon={() => (
-                                <Ionicons name="calendar-outline" size={15} />
+                                <Ionicons
+                                    name="calendar-outline"
+                                    color="#000"
+                                    size={15}
+                                />
                             )}>
                             Date
                         </Chip>
@@ -422,14 +437,14 @@ const Expenses = ({navigation}) => {
                             <TouchableOpacity
                                 style={styles.addButton}
                                 onPress={handleNewExpense}>
-                                <Text>
+                                <CenteredKarlaText>
                                     <Ionicons
                                         name="save-outline"
                                         color="#000"
                                         size={14}
                                     />
                                     &nbsp;Save
-                                </Text>
+                                </CenteredKarlaText>
                             </TouchableOpacity>
                         </View>
                     ) : null}
@@ -497,7 +512,7 @@ const Expenses = ({navigation}) => {
                 onDismiss={() => setSnackbarVisible(false)}>
                 <Text style={{color: '#000'}}>{snackbarText}</Text>
             </Snackbar>
-            <ProgressBar visible={isLoading} indeterminate color="#ccf0fa" />
+            {isLoading ? <ProgressBar indeterminate color="#fff" /> : null}
         </>
     );
 };
