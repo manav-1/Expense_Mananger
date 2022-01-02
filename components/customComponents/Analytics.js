@@ -6,7 +6,7 @@ import {PieChart, ContributionGraph} from 'react-native-chart-kit';
 import PropTypes from 'prop-types';
 import {groupBy} from 'lodash';
 
-const Analytics = ({expenses, contributionData}) => {
+const Analytics = ({expenses, contributionData, yearlyExpenses}) => {
     const [heatmapSelectedValue, setHeatmapSelectedValue] = React.useState({});
     const [visible, setVisible] = React.useState(false);
 
@@ -40,7 +40,7 @@ const Analytics = ({expenses, contributionData}) => {
     const contributionDataFunc = () => {
         let arr = [];
         let obj = groupBy(
-            expenses.filter(expense => expense.type === 'Debit'),
+            yearlyExpenses.filter(expense => expense.type === 'Debit'),
             'date',
         );
         Object.keys(obj).forEach(key => {

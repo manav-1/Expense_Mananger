@@ -266,6 +266,11 @@ const AnalyticsScreen = () => {
                         <Analytics
                             contributionData
                             expenses={expensesForAnalytics}
+                            yearlyExpenses={expenses.filter(
+                                expense =>
+                                    new Date(expense.date).getFullYear() ===
+                                    selectedYear,
+                            )}
                         />
                     </>
                 ) : null}
