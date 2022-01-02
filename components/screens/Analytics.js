@@ -1,12 +1,7 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-    Text,
-    View,
-    TouchableOpacity,
-    StyleSheet,
-    ScrollView,
-} from 'react-native';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {
     PaddedContainer,
     GradientContainer,
@@ -19,7 +14,6 @@ import database from '@react-native-firebase/database';
 import CustomExpense from '../customComponents/CustomExpense';
 import Analytics from '../customComponents/Analytics';
 import LineScreen from './LineScreen';
-import {ContributionGraph} from 'react-native-chart-kit';
 
 const MONTHS = [
     'January',
@@ -40,7 +34,6 @@ const now = new Date().getFullYear();
 const YEARS = Array.from(Array(5), (_, i) => i + (now - 4)).reverse();
 
 const AnalyticsScreen = () => {
-    const [visible, setVisible] = React.useState(false);
     const [selectedMonth, setSelectedMonth] = React.useState(
         MONTHS[new Date().getMonth()],
     );
@@ -101,6 +94,7 @@ const AnalyticsScreen = () => {
         };
         fetchData();
     }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => setEFA(selectedMonth, selectedYear), []);
     return (
         <GradientContainer>
@@ -287,19 +281,6 @@ const AnalyticsScreen = () => {
         </GradientContainer>
     );
 };
-const commitsData = [
-    {date: '2017-01-02', count: 1},
-    {date: '2017-01-03', count: 2},
-    {date: '2017-01-04', count: 3},
-    {date: '2017-01-05', count: 4},
-    {date: '2017-01-06', count: 5},
-    {date: '2017-01-30', count: 2},
-    {date: '2017-01-31', count: 3},
-    {date: '2017-03-01', count: 2},
-    {date: '2017-04-02', count: 4},
-    {date: '2017-03-05', count: 2},
-    {date: '2017-02-30', count: 4},
-];
 
 const styles = StyleSheet.create({
     tabBarTitle: {
