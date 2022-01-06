@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {
@@ -43,6 +44,7 @@ const AnalyticsScreen = () => {
     const [expenses, setExpenses] = React.useState([]);
     const [expensesForAnalytics, setExpensesForAnalytics] = React.useState([]);
     const setEFA = (month, year) => {
+        fetchData();
         setExpensesForAnalytics(
             expenses.filter(
                 expense =>
@@ -67,35 +69,38 @@ const AnalyticsScreen = () => {
         });
         return obj;
     };
-
-    React.useEffect(() => {
-        const fetchData = async () => {
-            const userId = auth().currentUser.uid;
-            database()
-                .ref(userId)
-                .child('/expenses/')
-                .on('value', data => {
-                    if (data.val()) {
-                        let values = {...data.val()};
-                        let expenses = [];
-                        for (let key in values) {
-                            values[key].key = key;
-                            values[key].index = expenses.length;
-                            values[key].month = new Date(
-                                values[key].date,
-                            ).getMonth();
-                            expenses.push(values[key]);
-                        }
-                        setExpenses(expenses);
-                    } else {
-                        setExpenses([]);
+    const fetchData = async () => {
+        const userId = auth().currentUser.uid;
+        database()
+            .ref(userId)
+            .child('/expenses/')
+            .once('value')
+            .then(data => {
+                if (data.val()) {
+                    let values = {...data.val()};
+                    let expenses = [];
+                    for (let key in values) {
+                        values[key].key = key;
+                        values[key].index = expenses.length;
+                        values[key].month = new Date(
+                            values[key].date,
+                        ).getMonth();
+                        expenses.push(values[key]);
                     }
-                });
-        };
-        fetchData();
-    }, []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => setEFA(selectedMonth, selectedYear), []);
+                    setExpenses(expenses);
+                } else {
+                    setExpenses([]);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    React.useEffect(
+        () => setEFA(new Date().getMonth(), new Date().getFullYear()),
+        [],
+    );
     return (
         <GradientContainer>
             <View style={styles.tabStyles}>
