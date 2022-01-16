@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Snackbar} from 'react-native-paper';
 // import firebase from '../FirebaseConfig';
 import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
@@ -17,6 +16,7 @@ import PropTypes from 'prop-types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 // eslint-disable-next-line no-unused-vars
 import Img from '../../assets/abstract-mobile-payment.png';
+import {snackbar} from '../state';
 
 // Styled Components
 import {
@@ -49,9 +49,6 @@ try {
 // }
 
 function LoginScreen({navigation}) {
-    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-    const [snackbarText, setSnackbarText] = React.useState('');
-
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
@@ -84,28 +81,26 @@ function LoginScreen({navigation}) {
                     .signInWithEmailAndPassword(obj.email, obj.password)
                     .then(async ({user}) => {
                         if (user.emailVerified) {
-                            setSnackbarVisible(true);
-                            setSnackbarText('Login successful');
+                            snackbar.openSnackBar('Login successful');
                             await AsyncStorage.setItem(
                                 'expense_user',
                                 user.uid,
                             );
                             navigation.push('HomeNav');
                         } else {
-                            setSnackbarVisible(true);
-                            setSnackbarText('Please verify your email first');
+                            snackbar.openSnackBar(
+                                'Please verify your email first',
+                            );
                         }
                     })
                     .catch(err => {
                         console.log(err);
-                        setSnackbarVisible(true);
-                        setSnackbarText(err.message);
+                        snackbar.openSnackBar(err.message);
                     });
             })
             .catch(err => {
                 console.log(err);
-                setSnackbarVisible(true);
-                setSnackbarText(err.message);
+                snackbar.openSnackBar(err.message);
             });
         // firebase.auth().createUserWithEmailAndPassword();
     };
@@ -119,15 +114,13 @@ function LoginScreen({navigation}) {
             await AsyncStorage.setItem('expense_user', auth().currentUser.uid);
             navigation.push('HomeNav');
         } catch (error) {
-            setSnackbarVisible(true);
             console.log(error);
-            setSnackbarText("Google Login isn't supported yet");
+            snackbar.openSnackBar("Google Login isn't supported yet");
         }
     };
 
     const handleFacebookLogin = async () => {
-        setSnackbarVisible(true);
-        setSnackbarText("Facebook login isn't supported yet");
+        snackbar.openSnackBar("Facebook login isn't supported yet");
         console.log('Facebook Login');
         // const result = await LoginManager.logInWithPermissions([
         //     'public_profile',
@@ -218,13 +211,6 @@ function LoginScreen({navigation}) {
                     </RowContainer>
                 </MainContainer>
             </View>
-            <Snackbar
-                visible={snackbarVisible}
-                duration={3000}
-                style={{backgroundColor: '#182e28CC'}}
-                onDismiss={() => setSnackbarVisible(false)}>
-                {snackbarText}
-            </Snackbar>
         </ImageBackground>
     );
 }

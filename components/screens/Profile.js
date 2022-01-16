@@ -10,17 +10,15 @@ import {
     ExpenseInput,
     PaddedContainer,
 } from '../customComponents/styledComponents';
-import {Snackbar, ProgressBar} from 'react-native-paper';
+import {ProgressBar} from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
+import {snackbar} from '../state';
 
 const Profile = () => {
     const [user, setUser] = React.useState(null);
     const [userName, setUserName] = React.useState('');
     const [userEmail, setUserEmail] = React.useState('');
-
-    const [snackbarText, setSnackbarText] = React.useState('');
-    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
     const [image, setImage] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -53,12 +51,10 @@ const Profile = () => {
                 email: userEmail,
             })
             .then(() => {
-                setSnackbarVisible(true);
-                setSnackbarText('Profile Updated');
+                snackbar.openSnackBar('Profile Updated');
             })
             .catch(error => {
-                setSnackbarVisible(true);
-                setSnackbarText(error.message);
+                snackbar.openSnackBar(error.message);
             });
     };
     const pickImage = async () => {
@@ -89,8 +85,7 @@ const Profile = () => {
                 setImage(photoUrl);
             })
             .catch(err => {
-                setSnackbarVisible(true);
-                setSnackbarText(err.message);
+                snackbar.openSnackBar(err.message);
             });
         setIsLoading(false);
     };
@@ -160,13 +155,6 @@ const Profile = () => {
                     </View>
                 </View>
             </PaddedContainer>
-            <Snackbar
-                visible={snackbarVisible}
-                duration={3000}
-                style={styles.snackbar}
-                onDismiss={() => setSnackbarVisible(false)}>
-                <Text style={styles.snackbarText}>{snackbarText}</Text>
-            </Snackbar>
         </GradientContainer>
     );
 };

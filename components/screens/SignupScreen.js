@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Snackbar} from 'react-native-paper';
+import {snackbar} from '../state';
 // import firebase from '../FirebaseConfig';
 import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
@@ -48,9 +48,6 @@ try {
 } catch (error) {}
 
 const SignupScreen = ({navigation}) => {
-    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-    const [snackbarText, setSnackbarText] = React.useState('');
-
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [name, setName] = React.useState('');
@@ -77,8 +74,7 @@ const SignupScreen = ({navigation}) => {
                 auth()
                     .createUserWithEmailAndPassword(obj.email, obj.password)
                     .then(async ({user}) => {
-                        setSnackbarVisible(true);
-                        setSnackbarText(
+                        snackbar.openSnackBar(
                             'Sign up successful, Please check email for verification',
                         );
                         await user.updateProfile({displayName: obj.name});
@@ -88,13 +84,11 @@ const SignupScreen = ({navigation}) => {
                         navigation.navigate('Login');
                     })
                     .catch(err => {
-                        setSnackbarVisible(true);
-                        setSnackbarText(err.message);
+                        snackbar.openSnackBar(err.message);
                     });
             })
             .catch(err => {
-                setSnackbarVisible(true);
-                setSnackbarText(err.message);
+                snackbar.openSnackBar(err.message);
             });
         // firebase.auth().createUserWithEmailAndPassword();
     };
@@ -107,13 +101,11 @@ const SignupScreen = ({navigation}) => {
             await AsyncStorage.setItem('expense_user', auth().currentUser.uid);
             navigation.push('HomeNav');
         } catch (err) {
-            setSnackbarVisible(true);
-            setSnackbarText("Google Login isn't supported yet");
+            snackbar.openSnackBar("Google Login isn't supported yet");
         }
     };
     const handleFacebookLogin = async () => {
-        setSnackbarVisible(true);
-        setSnackbarText("Facebook login isn't supported yet");
+        snackbar.openSnackBar("Facebook login isn't supported yet");
     };
     return (
         <ImageBackground
@@ -186,13 +178,6 @@ const SignupScreen = ({navigation}) => {
                     </RowContainer>
                 </MainContainer>
             </View>
-            <Snackbar
-                visible={snackbarVisible}
-                duration={3000}
-                style={{backgroundColor: '#78314fCC'}}
-                onDismiss={() => setSnackbarVisible(false)}>
-                {snackbarText}
-            </Snackbar>
         </ImageBackground>
     );
 };

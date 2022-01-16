@@ -22,28 +22,17 @@ const ExpenseAccordion = ({title, expenses, deleteExpenses, editItem}) => {
                 />
             </TouchableOpacity>
             {expanded ? (
-                <View
-                    style={[
-                        styles.accordionExpenseContainer,
-                        {
-                            justifyContent:
-                                expenses.length > 1
-                                    ? 'space-around'
-                                    : 'flex-start',
-                        },
-                    ]}>
-                    <FlatList
-                        data={expenses}
-                        numColumns={2}
-                        renderItem={({item}) => (
-                            <CustomExpense
-                                expense={item}
-                                editItem={() => editItem(item)}
-                                deleteItem={() => deleteExpenses(item.index)}
-                            />
-                        )}
-                    />
-                </View>
+                <FlatList
+                    data={expenses}
+                    numColumns={2}
+                    renderItem={({item}) => (
+                        <CustomExpense
+                            expense={item}
+                            editItem={() => editItem(item)}
+                            deleteItem={() => deleteExpenses(item.index)}
+                        />
+                    )}
+                />
             ) : null}
         </View>
     );

@@ -18,7 +18,7 @@ import {
     CenteredKarlaText,
 } from '../customComponents/styledComponents';
 import PropTypes from 'prop-types';
-import {Snackbar, ActivityIndicator, ProgressBar} from 'react-native-paper';
+import {ActivityIndicator, ProgressBar} from 'react-native-paper';
 import * as Yup from 'yup';
 import CustomExpense from '../customComponents/CustomExpense';
 import ExpenseAccordion from '../customComponents/ExpenseAccordion';
@@ -28,6 +28,7 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 // import DatePicker from 'react-native-date-picker';
 import DatePicker from 'react-native-neat-date-picker';
+import {snackbar} from '../state';
 
 const Expenses = ({navigation}) => {
     const sampleValues = {
@@ -55,8 +56,6 @@ const Expenses = ({navigation}) => {
         date: new Date(),
     });
     const [showMore, setShowMore] = React.useState(false);
-    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-    const [snackbarText, setSnackbarText] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
     const [expensesToShow, setExpensesToShow] = React.useState(
         expenses.sort((a, b) => new Date(a.date) - new Date(b.date)).reverse(),
@@ -88,11 +87,6 @@ const Expenses = ({navigation}) => {
                     setValues('array');
                 }
             });
-        // .then()
-        // .catch((err) => {
-        //   setSnackbarVisible(true);
-        //   setSnackbarText(err.message);
-        // });
     };
 
     React.useEffect(() => {
@@ -104,11 +98,11 @@ const Expenses = ({navigation}) => {
         // firebase.
         if (!editable) {
             database().ref(`/${user.uid}/expenses/`).push(item);
-            setSnackbarText('Added Successfully');
+            snackbar.openSnackBar('Expense Added Successfully');
             setVisible(false);
         } else {
             database().ref(`/${user.uid}/expenses/${editKey}`).set(item);
-            setSnackbarText('Saved Successfully');
+            snackbar.openSnackBar('Expense Saved Successfully');
             setVisible(false);
         }
     };
@@ -141,11 +135,9 @@ const Expenses = ({navigation}) => {
                 });
                 setEditable(false);
                 setEditKey(null);
-                setSnackbarVisible(true);
             })
             .catch(err => {
-                setSnackbarVisible(true);
-                setSnackbarText(err.message);
+                snackbar.openSnackBar(err.message);
             });
         setIsLoading(false);
     };
@@ -161,6 +153,67 @@ const Expenses = ({navigation}) => {
         setEditable(true);
         setEditKey(expense.key);
     };
+
+    const chips = [
+        {
+            label: 'All',
+            icon: 'wallet-outline',
+            onPress: () => {
+                setValues('array');
+                setExpensesToShow(expenses);
+            },
+        },
+        {
+            label: 'Debit',
+            icon: 'trending-down-outline',
+            onPress: () => {
+                setValues('array');
+                setExpensesToShow(
+                    expenses.filter(item => item.type === 'Debit'),
+                );
+            },
+        },
+        {
+            label: 'Credit',
+            icon: 'trending-up-outline',
+            onPress: () => {
+                setValues('array');
+                setExpensesToShow(
+                    expenses.filter(item => item.type === 'Credit'),
+                );
+            },
+        },
+        {
+            label: 'Expense Way',
+            icon: 'wallet-outline',
+            onPress: () => {
+                const initialValue = {};
+                expenses.forEach(expense => {
+                    if (!initialValue[expense.way]) {
+                        initialValue[expense.way] = [];
+                    }
+                    initialValue[expense.way].push(expense);
+                });
+                setValues('object');
+                setExpensesToShow(initialValue);
+            },
+        },
+        {
+            label: 'Date',
+            icon: 'calendar-outline',
+            onPress: () => {
+                const initialValue = {};
+                expenses.forEach(expense => {
+                    if (!initialValue[expense.date]) {
+                        initialValue[expense.date] = [];
+                    }
+                    initialValue[expense.date].push(expense);
+                });
+                setValues('object');
+                setExpensesToShow(initialValue);
+            },
+        },
+    ];
 
     return (
         <>
@@ -181,99 +234,21 @@ const Expenses = ({navigation}) => {
                 </View>
                 <PaddedContainer>
                     <ScrollView horizontal>
-                        <Chip
-                            style={styles.chip}
-                            onPress={() => {
-                                setValues('array');
-                                setExpensesToShow(expenses);
-                            }}
-                            icon={() => (
-                                <Ionicons
-                                    name="wallet-outline"
-                                    color="#000"
-                                    size={15}
-                                />
-                            )}>
-                            All
-                        </Chip>
-                        <Chip
-                            style={styles.chip}
-                            onPress={() => {
-                                setValues('array');
-                                setExpensesToShow(
-                                    expenses.filter(e => e.type === 'Debit'),
-                                );
-                            }}
-                            icon={() => (
-                                <Ionicons
-                                    name="trending-down-outline"
-                                    color="#000"
-                                    size={15}
-                                />
-                            )}>
-                            Debit
-                        </Chip>
-                        <Chip
-                            style={styles.chip}
-                            onPress={() => {
-                                setValues('array');
-                                setExpensesToShow(
-                                    expenses.filter(e => e.type === 'Credit'),
-                                );
-                            }}
-                            icon={() => (
-                                <Ionicons
-                                    name="trending-up-outline"
-                                    color="#000"
-                                    size={15}
-                                />
-                            )}>
-                            Credit
-                        </Chip>
-                        <Chip
-                            style={styles.chip}
-                            onPress={() => {
-                                const initialValue = {};
-                                expenses.forEach(expense => {
-                                    if (!initialValue[expense.way]) {
-                                        initialValue[expense.way] = [];
-                                    }
-                                    initialValue[expense.way].push(expense);
-                                });
-                                setValues('object');
-                                setExpensesToShow(initialValue);
-                            }}
-                            icon={() => (
-                                <Ionicons
-                                    name="enter-outline"
-                                    color="#000"
-                                    size={15}
-                                />
-                            )}>
-                            Expense Way
-                        </Chip>
-                        <Chip
-                            style={styles.chip}
-                            onPress={() => {
-                                const initialValue = {};
-                                expenses.forEach(expense => {
-                                    if (!initialValue[expense.date]) {
-                                        initialValue[expense.date] = [];
-                                    }
-                                    initialValue[expense.date].push(expense);
-                                });
-                                setValues('object');
-                                setExpensesToShow(initialValue);
-                            }}
-                            icon={() => (
-                                <Ionicons
-                                    name="calendar-outline"
-                                    color="#000"
-                                    size={15}
-                                />
-                            )}>
-                            Date
-                        </Chip>
+                        {chips.map((chip, index) => (
+                            <Chip
+                                key={index}
+                                style={styles.chip}
+                                onPress={chip.onPress}
+                                icon={() => (
+                                    <Ionicons
+                                        name={chip.icon}
+                                        color="#000"
+                                        size={15}
+                                    />
+                                )}>
+                                {chip.label}
+                            </Chip>
+                        ))}
                     </ScrollView>
                     {visible ? (
                         <View>
@@ -504,14 +479,6 @@ const Expenses = ({navigation}) => {
                     ) : null}
                 </PaddedContainer>
             </GradientContainer>
-
-            <Snackbar
-                visible={snackbarVisible}
-                duration={3000}
-                style={{backgroundColor: '#f1c0cb', marginBottom: 80}}
-                onDismiss={() => setSnackbarVisible(false)}>
-                <Text style={{color: '#000'}}>{snackbarText}</Text>
-            </Snackbar>
             {isLoading ? <ProgressBar indeterminate color="#fff" /> : null}
         </>
     );
@@ -569,24 +536,6 @@ const styles = StyleSheet.create({
         borderRadius: 1,
         color: '#ccf0fa',
         marginHorizontal: 10,
-    },
-    accordionButton: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    accordionTitle: {
-        color: '#fff',
-        fontFamily: 'Karla-Regular',
-        fontSize: 20,
-        marginBottom: 10,
-    },
-    accordionExpenseContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    accordionContainer: {
-        marginVertical: 20,
     },
     chip: {
         marginHorizontal: 8,

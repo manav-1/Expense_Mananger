@@ -10,20 +10,18 @@ import {
 } from '../customComponents/styledComponents';
 // import DatePicker from 'react-native-datepicker';
 import DatePicker from 'react-native-neat-date-picker';
-import {Snackbar} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import CustomNote from '../customComponents/CustomNote';
+import {snackbar} from '../state';
 
 const Notes = () => {
     const [date, setDate] = React.useState(new Date());
     const [open, setOpen] = React.useState(false);
     const [note, setNote] = React.useState('');
-    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
-    const [snackbarText, setSnackbarText] = React.useState('');
     const [user, setUser] = React.useState(null);
     const [notes, setNotes] = React.useState([]);
     const [notesVisible, setNotesVisible] = React.useState(false);
@@ -47,11 +45,6 @@ const Notes = () => {
                     setNotes([]);
                 }
             });
-        // .then()
-        // .catch((err) => {
-        //   setSnackbarVisible(true);
-        //   setSnackbarText(err.message);
-        // });
     };
 
     React.useEffect(() => {
@@ -69,15 +62,13 @@ const Notes = () => {
             .validate(values)
             .then(() => {
                 addNote({...values, date: values.date.toDateString()});
-                setSnackbarVisible(true);
-                setSnackbarText('Added Successfully');
+                snackbar.openSnackBar('Added Successfully');
                 setNote('');
                 setDate(new Date());
                 setNotesVisible(false);
             })
             .catch(error => {
-                setSnackbarVisible(true);
-                setSnackbarText(error.message);
+                snackbar.openSnackBar(error.message);
             });
         setNotesVisible(false);
     };
@@ -170,13 +161,6 @@ const Notes = () => {
                     ))}
                 </PaddedContainer>
             </GradientContainer>
-            <Snackbar
-                visible={snackbarVisible}
-                duration={3000}
-                style={{backgroundColor: '#f1c0cb', marginBottom: 80}}
-                onDismiss={() => setSnackbarVisible(false)}>
-                <Text style={{color: '#000'}}>{snackbarText}</Text>
-            </Snackbar>
         </>
     );
 };
